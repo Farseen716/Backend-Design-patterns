@@ -19,4 +19,3 @@ GAME3.add_winner(position=3, name="Furqan")
 GAME1.leaderboard.print()
 GAME2.leaderboard.print()
 GAME3.leaderboard.print()
-
