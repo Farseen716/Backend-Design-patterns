@@ -1,0 +1,36 @@
+"""A Singleton dictionary of user wallets by Farseen Ashraf"""
+
+from decimal import Decimal
+from reports import Reports
+
+
+class Wallets:
+    """A Singleton dictionary of user wallets"""
+    _wallet: dict[str, Decimal] = {}
+
+    def __new__(cls):
+        return cls
+
+    @classmethod
+    def create_wallet(cls, user_id: str) -> bool:
+        """A method to initialize the users wallet"""
+        if user_id not in cls._wallet:
+            cls._wallet[user_id] = Decimal('0')
+            Reports.log_event(
+                f"Wallet for '{user_id}' created and set to 0"
+            )
+            return True
+        return False
+
+    @classmethod
+    def get_balance(cls, user_id: str) -> Decimal:
+        """A method to check a users balance"""
+        Reports.log_event(f"Balance check for '{user_id}' = {cls._wallet[user_id]}")
+        return cls._wallet[user_id]
+
+    @classmethod
+    def adjust_balance(cls, user_id: str, amount: Decimal) -> Decimal:
+        cls._wallet[user_id] = cls._wallet[user_id] + Decimal(amount)
+        Reports.log_event(f"Balance adjustment for '{user_id}'. "
+                          f"New balance = {cls._wallet[user_id]}")
+        return cls._wallet[user_id]
